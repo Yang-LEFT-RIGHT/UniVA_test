@@ -2,7 +2,7 @@
 **Towards Open-Source Next-Generation Video Generalist**
 
 <p align="center">
- <img src="univa-header.png" width="100%" alt="UniVA Header">
+ <img src="univa_header.jpg" width="100%" alt="UniVA Header">
 </p>
 
 <p align="center">
