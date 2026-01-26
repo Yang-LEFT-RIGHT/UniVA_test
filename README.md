@@ -2,6 +2,10 @@
 **Towards Open-Source Next-Generation Video Generalist**
 
 <p align="center">
+ <img src="univa-header.png" width="100%" alt="UniVA Header">
+</p>
+
+<p align="center">
     <a href="https://univa.online" target="_blank">
         <img src="https://img.shields.io/badge/🏠-Project_Page-orange.svg" alt="Project Page">
     </a>
