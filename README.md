@@ -260,3 +260,6 @@ We would like to express our gratitude to the following:
 - **Open-Source Community**: We thank all contributors and the broader open-source community for their continuous support, feedback, and contributions to this project.
 
 
+## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=univa-agent/univa&type=date&legend=top-left)](https://www.star-history.com/#univa-agent/univa&type=date&legend=top-left)
