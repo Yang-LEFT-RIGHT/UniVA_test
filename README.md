@@ -84,12 +84,15 @@ And using the project configuration:
 ```bash
 pip install -e .
 ```
-###  Configure LLM API
+
+### 3. Configure LLM API
+```bash
 cp .env.example .env
+```
 
 Select the  PROVIDER and add the corresponding API.
 
-#### 3. Configure the System
+#### 4. Configure the System
  
 Edit the configuration file to set your API keys and preferences:
 
@@ -111,7 +114,7 @@ admin_access_code = "your-admin-code"
 ```
 
 
-#### 4. Configure MCP Servers
+#### 5. Configure MCP Servers
 
 Edit `univa/config/mcp_configs.json` to configure your MCP (Model Context Protocol) servers:
 
@@ -127,7 +130,7 @@ Edit `univa/config/mcp_configs.json` to configure your MCP (Model Context Protoc
 }
 ```
 
-#### 5. Using UniVA
+#### 6. Using UniVA
 
 You have two options to use UniVA backend:
 
@@ -152,7 +155,7 @@ python univa_server.py
 
 The backend API will be available at `http://localhost:8000`.
 
-#### 6. Test the Backend
+#### 7. Test the Backend
 
 ```bash
 curl http://localhost:8000/health
