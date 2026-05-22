@@ -6,7 +6,7 @@ import traceback
 from pathlib import Path
 from dotenv import load_dotenv
 
-from typing import List, Dict, Any, Optional
+from typing import List, Dict, Any, Optional, Union
 from pydantic import BaseModel, Field
 import logging
 
@@ -29,6 +29,7 @@ from univa.utils.model_factory import create_model
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+#获取prompts文件夹下的提示词文本
 def load_prompt(prompt_name: str) -> str:
     prompt_dir = config.get('prompt_dir')
     prompt_path = os.path.join(prompt_dir, f"{prompt_name}.txt")
@@ -86,6 +87,8 @@ class PlanAgent:
         plan_model_base_url = config.get('plan_model_base_url', '')
         plan_model_extra_params = config.get('plan_model_extra_params', '')
         
+
+        #制成ango agent
         self.agent = Agent(
             name="Univideo Plan Agent",
             model=create_model(
@@ -104,6 +107,8 @@ class PlanAgent:
             }
         )
     
+
+    #将工具转化为可嵌入提示词的格式
     def _get_available_tools_description(self) -> str:
         tools_info = []
         if hasattr(self.mcp_tools, 'tools') and self.mcp_tools.tools:
@@ -111,7 +116,9 @@ class PlanAgent:
                 tools_info.append(f"- {tool.name}: {tool.description}")
         return "\n".join(tools_info) if tools_info else "No tools available"
     
-    def extract_plan_from_content(self, content: str) -> Optional[Dict]:
+
+    #将规划转化为json格式，可以提取回复中的json内容，无法解析时返回原str
+    def extract_plan_from_content(self, content: str) -> Union[Dict, str]:
         try:
             match = re.search(r'```json\s*(\{.*?\})\s*```', content, re.DOTALL)
             if match:
@@ -217,8 +224,8 @@ class ActAgent:
             tool_call_limit=15,
         )
 
-    
-    async def execute_plan(self, question, plan) -> Dict[str, Any]:
+    #这个是执行各个规划的主要函数，但是一旦有步骤抛出异常就会中断整个任务，这里的处理还要讨论是不是要修改。
+    async def execute_plan(self, question, plan) -> Union[Dict[int, Any], str]:
         
         execution_results: Dict[int, Any]={}
         
@@ -238,6 +245,7 @@ class ActAgent:
         
         return execution_results
     
+    #1
     async def _execute_step(self, step, question, plan, execution_results) -> Any:
         input_context = f"""
         ### User Request

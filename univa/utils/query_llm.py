@@ -358,7 +358,7 @@ def query_openai(
     messages: list[dict],
     max_completion_tokens: int = 1024,
     temperature: float = 1.0,
-    base_url: str = "https://api.openai.com/v1"
+    base_url: str = "https://ark.cn-beijing.volces.com/api/v3"
 ) -> dict:
     url = f"{base_url}/chat/completions"
     
@@ -418,7 +418,7 @@ def refine_gen_prompt(prompt: str, media_type: str = "image") -> str:
     message = prepare_multimodal_messages_openai_format(text)
     response = query_openai(
                         api_key=llm_config.get('openai_api_key', None),
-                        model=llm_config.get('model', 'gpt-5-2025-08-07'),
+                        model=llm_config.get('model', 'doubao-seed-2-0-lite-260428'),
                         messages=message,
                         max_completion_tokens=8192
                     )

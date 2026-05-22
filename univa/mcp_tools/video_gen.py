@@ -9,7 +9,9 @@ from mcp_tools.base import ToolResponse, setup_logger
 from utils.video_process import merge_videos, storyboard_generate, save_last_frame_decord
 from utils.query_llm import refine_gen_prompt, audio_prompt_gen
 from utils.image_process import download_image
-from utils.wavespeed_api import text_to_video_generate, image_to_video_generate, frame_to_frame_video, text_to_image_generate, image_to_image_generate, audio_gen, hailuo_i2v_pro
+#from utils.wavespeed_api import text_to_video_generate, image_to_video_generate, frame_to_frame_video, text_to_image_generate, image_to_image_generate, audio_gen, hailuo_i2v_pro
+from utils.Seedance_api import text_to_video_generate, text_to_image_generate
+
 
 # Load configuration
 os.chdir(os.path.dirname(os.path.dirname(__file__)))
@@ -47,8 +49,8 @@ async def text2video_gen(prompt: str) -> str:
     """
     model = video_gen_config.get("text_to_video")
     
-    if model == "seedance":
-        api_key = video_gen_config.get("wavespeed_api")
+    if model == "doubao-seedance-2-0-260128":
+        api_key = video_gen_config.get("ark_api")
         save_dir = f"results/{datetime.now().strftime('%Y%m%d%H%M%S')}_{prompt[:30].replace(' ', '_')}"
         os.makedirs(save_dir, exist_ok=True)
         _time = datetime.now().strftime("%m%d%H%M%S")
@@ -84,9 +86,9 @@ async def storyvideo_gen(prompt: str) -> ToolResponse:
     """
 
     model = video_gen_config.get("text_to_video")
-    if model == "seedance":
-        if save_dir is None:
-            save_dir = f"infer/v2v/{datetime.now().strftime('%Y%m%d%H%M%S')}_{prompt[:30].replace(' ', '_')}"
+    if model == "doubao-seedance-2-0-260128":
+        
+        save_dir = f"infer/v2v/{datetime.now().strftime('%Y%m%d%H%M%S')}_{prompt[:30].replace(' ', '_')}"
         os.makedirs(save_dir, exist_ok=True)
 
         # 1.generate a storyboard first
@@ -106,7 +108,7 @@ async def storyvideo_gen(prompt: str) -> ToolResponse:
             char_description = character.get("description")
             refined_char_description = refine_gen_prompt(char_description, media_type="character")
 
-            api_key = image_gen_config.get("wavespeed_api")
+            api_key = image_gen_config.get("ark_api")
             image_url = text_to_image_generate(api_key, refined_char_description, aspect_ratio="1:1")
             time = datetime.now().strftime("%m%d%H%M%S")
             image_save_path = f"{save_dir}/{time}_{char_id}.jpg"

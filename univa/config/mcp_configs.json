@@ -4,8 +4,8 @@
       "command": "python",
       "args": ["-m", "mcp_tools.video_editing"],
       "env": {
-        "PYTHONPATH": "/home/zhengyangliang/UniVideo",
-        "CWD": "/home/zhengyangliang/UniVideo"
+        "PYTHONPATH": "D:/PKU/Work/Video Agent/UniVA/univa",
+        "CWD": "D:/PKU/Work/Video Agent/UniVA/univa" 
       },
       "auto_confirm": []
     },
@@ -13,8 +13,8 @@
       "command": "python",
       "args": ["-m", "mcp_tools.video_tracking"],
       "env": {
-        "PYTHONPATH": "/home/zhengyangliang/UniVideo",
-        "CWD": "/home/zhengyangliang/UniVideo"
+        "PYTHONPATH": "D:/PKU/Work/Video Agent/UniVA/univa",
+        "CWD": "D:/PKU/Work/Video Agent/UniVA/univa"
       },
       "auto_confirm": []
     },
@@ -22,8 +22,8 @@
       "command": "python",
       "args": ["-m", "mcp_tools.video_understanding"],
       "env": {
-        "PYTHONPATH": "/home/zhengyangliang/UniVideo",
-        "CWD": "/home/zhengyangliang/UniVideo"
+        "PYTHONPATH": "D:/PKU/Work/Video Agent/UniVA/univa",
+        "CWD": "D:/PKU/Work/Video Agent/UniVA/univa"
       },
       "auto_confirm": []
     },
@@ -31,8 +31,8 @@
       "command": "python",
       "args": ["-m", "mcp_tools.image_gen"],
       "env": {
-        "PYTHONPATH": "/home/zhengyangliang/UniVideo",
-        "CWD": "/home/zhengyangliang/UniVideo"
+        "PYTHONPATH": "D:/PKU/Work/Video Agent/UniVA/univa",
+        "CWD": "D:/PKU/Work/Video Agent/UniVA/univa"
       },
       "auto_confirm": []
     },
@@ -40,8 +40,8 @@
       "command": "python",
       "args": ["-m", "mcp_tools.video_gen"],
       "env": {
-        "PYTHONPATH": "/home/zhengyangliang/UniVideo",
-        "CWD": "/home/zhengyangliang/UniVideo"
+        "PYTHONPATH": "D:/PKU/Work/Video Agent/UniVA/univa",
+        "CWD": "D:/PKU/Work/Video Agent/UniVA/univa"
       },
       "auto_confirm": []
     },
@@ -49,8 +49,8 @@
       "command": "python",
       "args": ["-m", "mcp_tools.audio_gen"],
       "env": {
-        "PYTHONPATH": "/home/zhengyangliang/UniVideo",
-        "CWD": "/home/zhengyangliang/UniVideo"
+        "PYTHONPATH": "D:/PKU/Work/Video Agent/UniVA/univa",
+        "CWD": "D:/PKU/Work/Video Agent/UniVA/univa"
       },
       "auto_confirm": []
     }

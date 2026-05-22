@@ -561,7 +561,7 @@ async def storyboard_generate(user_prompt: str, gentype: str=None) -> dict:
     
     response = query_openai(
         api_key=llm_config.get('openai_api_key', None),
-        model=llm_config.get('model', 'gpt-5-2025-08-07'),
+        model=llm_config.get('model', 'doubao-seed-2-0-lite-260428'),
         messages=messages,
         max_tokens=8192
     )

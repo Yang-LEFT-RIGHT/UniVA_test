@@ -70,11 +70,19 @@ def load_mcp_config(project_root, env_vars):
             mcp_config[section][key] = value
 
     # 1. API Keys
+    """
     wavespeed_key = env_vars.get("WAVESPEED_API_KEY")
     if wavespeed_key:
         for section in ["image_gen", "video_editing", "video_gen", "audio_gen"]:
             if section in mcp_config or section == "video_gen": # Ensure video_gen exists if key provided
                 set_config(section, "wavespeed_api", wavespeed_key)
+    """
+
+    ark_key = env_vars.get("ARK_API_KEY")
+    if ark_key:
+        for section in ["image_gen", "video_editing", "video_gen", "audio_gen"]:
+            if section in mcp_config or section == "video_gen":
+                set_config(section, "ark_api", ark_key)
 
     set_config("llm", "openai_api_key", env_vars.get("LLM_OPENAI_API_KEY"))
 

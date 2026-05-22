@@ -6,7 +6,10 @@ from mcp.server.fastmcp import FastMCP
 
 from mcp_tools.base import ToolResponse, setup_logger
 from utils.image_process import download_image
-from utils.wavespeed_api import text_to_image_generate, seedream_v4_edit, seedream_v4_sequential_edit
+#from utils.wavespeed_api import text_to_image_generate, seedream_v4_edit, seedream_v4_sequential_edit
+from utils.Seedance_api import text_to_image_generate, image_to_image_generate,seedream5_sequential_edit
+
+
 
 # Load configuration
 # config_path = "config/mcp_tools_config/config.yaml"
@@ -21,7 +24,7 @@ image_gen_config = config.get('image_gen', {})
 logger = setup_logger(__name__, "logs/mcp_tools", "image_gen.log")
 mcp = FastMCP("Image_Generation_Server")
 
-
+# 这些工具都没有加生成失败的输出，先进行修改，修改结束后再决定添加
 
 @mcp.tool()
 def text2image_generate(prompt: str)-> ToolResponse:
@@ -40,9 +43,19 @@ def text2image_generate(prompt: str)-> ToolResponse:
               - 'error' (str, optional): An error message if the generation failed.
     """
     model = image_gen_config.get("text_to_image")
-
+    
+    """
     if model == "flux-kontext":
-        api_key = image_gen_config.get("wavespeed_api")
+        api_key = image_gen_config.get("ark_api")
+        image_url = text_to_image_generate(api_key, prompt)
+        _time = datetime.now().strftime("%m%d%H%M%S")
+        base_output_path = image_gen_config.get("base_output_path", "results/image")
+        os.makedirs(base_output_path, exist_ok=True)
+        image_save_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), f"{base_output_path}/{_time}_{prompt[:30].replace(' ', '_')}.jpg")
+    """
+
+    if model=="doubao-seedream-5-0-260128":
+        api_key = image_gen_config.get("ark_api")
         image_url = text_to_image_generate(api_key, prompt)
         _time = datetime.now().strftime("%m%d%H%M%S")
         base_output_path = image_gen_config.get("base_output_path", "results/image")
@@ -82,10 +95,21 @@ def image2image_generate(prompt: str, image_path: str|list[str]):
 
     model = image_gen_config.get("image_to_image")
     
+    """
     if model == "flux-kontext":
         api_key = image_gen_config.get("wavespeed_api")
         res = seedream_v4_edit(api_key, prompt, image_path)
         image_url = res["output_path"]
+        _time = datetime.now().strftime("%m%d%H%M%S")
+        base_output_path = image_gen_config.get("base_output_path", "results/image")
+        os.makedirs(base_output_path, exist_ok=True)
+        image_save_path = f"{base_output_path}/{_time}_{prompt[:30].replace(' ', '_')}.jpg"
+
+    """
+
+    if model=="doubao-seedream-5-0-260128":
+        api_key = image_gen_config.get("ark_api")
+        image_url = image_to_image_generate(api_key, prompt, image_path)
         _time = datetime.now().strftime("%m%d%H%M%S")
         base_output_path = image_gen_config.get("base_output_path", "results/image")
         os.makedirs(base_output_path, exist_ok=True)
@@ -120,32 +144,33 @@ def sequential_image_gen(prompt: str, images: list[str], images_num: int = 2) ->
               - 'message' (str, optional): A success message.
               - 'error' (str, optional): An error message if the generation failed.
     """
-    api_key = image_gen_config.get("wavespeed_api")
+    api_key = image_gen_config.get("ark_api")
     
     try:
-        result = seedream_v4_sequential_edit(
+        result = seedream5_sequential_edit(
             api_key=api_key,
             prompt=prompt,
             images=images,
             max_images=images_num
         )
 
-        output_images = result.get('output_path')
-        output_paths = []
-        for item in output_images:
-            _time = datetime.now().strftime("%m%d%H%M%S")
-            base_output_path = image_gen_config.get("base_output_path", "results/image")
-            os.makedirs(base_output_path, exist_ok=True)
-            image_save_path = f"{base_output_path}/{_time}_{prompt[:30].replace(' ', '_')}.jpg"
-            download_image(item, save_path=image_save_path)
-            output_paths.append(image_save_path)
-        
-        if result.get('success'):
-            return ToolResponse(
-                success=True,
-                output_path=output_paths,
-                message="Sequential image editing completed successfully."
-            )
+        is_success = result.get('success')
+        if is_success:
+            output_images = result.get('output_urls')
+            output_paths = []
+            for item in output_images:
+                _time = datetime.now().strftime("%m%d%H%M%S")
+                base_output_path = image_gen_config.get("base_output_path", "results/image")
+                os.makedirs(base_output_path, exist_ok=True)
+                image_save_path = f"{base_output_path}/{_time}_{prompt[:30].replace(' ', '_')}.jpg"
+                download_image(item, save_path=image_save_path)
+                output_paths.append(image_save_path)
+                return ToolResponse(
+                    success=True,
+                    output_path=output_paths,
+                    message="Sequential image editing completed successfully."
+                )
+            
         else:
             return ToolResponse(
                 success=False,
